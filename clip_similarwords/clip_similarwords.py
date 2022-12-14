@@ -24,7 +24,7 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-class CLIPTextToTextSimilarWords():
+class CLIPTextSimilarWords():
     def __init__(self):
         import pickle
         with open(parent_dir + os.path.sep + "clip_similarwords_all.pt", 'rb') as f:
@@ -35,10 +35,10 @@ class CLIPTextToTextSimilarWords():
             key += "</w>"
             key = next(k for k, v in self.tok_decoder.items() if v == key)
 
-        return CLIPTextToTextSimilarWordsIter(self, key)
+        return CLIPTextSimilarWordsIter(self, key)
 
 
-class CLIPTextToTextSimilarWordsIter():
+class CLIPTextSimilarWordsIter():
     def __init__(self, sim, key):
         self.sim = sim
         self.key = key
@@ -62,7 +62,7 @@ def main():
         print("Usage: clip-similarities [ word_fragment | --all ]")
         exit()
 
-    clipsim = CLIPTextToTextSimilarWords()
+    clipsim = CLIPTextSimilarWords()
     if sys.argv[1] == "--all":
         keys = [sk for sk, s in clipsim.tok_decoder.items()]
     else:

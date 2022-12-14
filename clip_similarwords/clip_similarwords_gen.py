@@ -25,7 +25,7 @@ import time
 from tqdm import tqdm
 
 
-class CLIPTextToTextSimilarWordsGen(transformers.CLIPTextModel):
+class CLIPTextSimilarWordsGen(transformers.CLIPTextModel):
     def __init__(self, config: transformers.CLIPTextConfig):
         super().__init__(config)
 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     assert(len(arr) % 64 == 0)
     variant_prompts = torch.cuda.LongTensor(arr)
 
-    f = CLIPTextToTextSimilarWordsGen.from_pretrained(model_path).to("cuda").half()
+    f = CLIPTextSimilarWordsGen.from_pretrained(model_path).to("cuda").half()
     idx, similarities = f(variant_prompts)
     idx = variant_prompts[idx]
 
