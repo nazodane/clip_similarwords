@@ -24,8 +24,8 @@ Usage of the command
 Usage of the module
 ===================
 ```python
-from clip_similarwords import CLIPTextToTextSimilarWords
-clipsim = CLIPTextToTextSimilarWords()
+from clip_similarwords import CLIPTextSimilarWords
+clipsim = CLIPTextSimilarWords()
 for key_token, sim_token, cos_similarity in clipsim("cat"):
     print("%s -> %s ( cos_similarity: %.2f )"%(key_token, sim_token, cos_similarity))
 ```
