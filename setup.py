@@ -40,6 +40,7 @@ setup(
     url = "https://github.com/nazodane/clip_similarwords",
     packages=['clip_similarwords'],
     include_package_data = True,
+    long_description_content_type="text/markdown",
     long_description=read('README.md'),
     python_requires=">=3.10.0",
     install_requires=install_requires,
