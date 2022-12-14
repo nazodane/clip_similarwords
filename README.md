@@ -1,16 +1,16 @@
-The clip_similarwords is the implementation of finding similar 1-token words of OpenAI's [CLIP](https://github.com/openai/CLIP) in milliseconds. 
+The clip_similarwords is the implementation of finding similar 1-token words of OpenAI's [CLIP](https://github.com/openai/CLIP) in less than one second. 
 
-OpenAI's CLIP uses text-image similarities so its text-text similarities may also be typical image similarities unlike [WordNet](https://en.wikipedia.org/wiki/WordNet) or other synonym directories.
+OpenAI's CLIP uses text-image similarities so its text-text similarities may also be text's typical image similarities unlike [WordNet](https://en.wikipedia.org/wiki/WordNet) or other synonym dictionaries.
 
 Note that, for speed and storage reason (PyPI is limited to 60MB), the words composed by 2 or more tokens are not supported. 
 
 Installation
 ============
 clip_similarwords is easily installable via pip command:
-<!--```bash
+```bash
 pip install clip_similarwords
 ```
-or-->
+or
 ```bash
 pip install git+https://github.com/nazodane/clip_similarwords.git
 ```
@@ -22,7 +22,7 @@ Usage of the command
 ```
 
 Usage of the module
-====================
+===================
 ```python
 from clip_similarwords import CLIPTextToTextSimilarWords
 clipsim = CLIPTextToTextSimilarWords()
@@ -32,7 +32,7 @@ for key_token, sim_token, cos_similarity in clipsim("cat"):
 
 Requirements for model uses
 ===========================
-* Linux
+* Linux (should also works on other environmets)
 
 no PyTorch nor CUDA are required.
 
