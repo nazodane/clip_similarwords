@@ -42,15 +42,22 @@ class CLIPTextSimilarWordsIter():
     def __init__(self, sim, key):
         self.sim = sim
         self.key = key
-        if key not in sim.dict:
+        if key not in sim.dict: # not last word-fragment
             self.keyi = [].__iter__()
+#            self.first = False
             return
         self.keyi = sim.dict[key].__iter__()
+#        self.first = True
 
     def __iter__(self):
         return self
 
     def __next__(self):
+#        if self.first:
+#            self.first = False
+#            return (self.sim.tok_decoder[self.key].replace("</w>", ""), \
+#                    self.sim.tok_decoder[self.key].replace("</w>", ""), \
+#                    1.0)
         data = next(self.keyi)
 
         return (self.sim.tok_decoder[self.key].replace("</w>", ""), \

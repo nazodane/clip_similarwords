@@ -60,6 +60,8 @@ class CLIPTextSimilarWordsGen(transformers.CLIPTextModel):
         del y
         del x
         mask = t >= 0.85
+#        mask2 = t != 1.0
+#        mask &= mask2
         nz = torch.nonzero(mask)
 #        print(nz.shape)
         print(t[mask].shape) # 閾値 0.85 で torch.Size([1056635])
