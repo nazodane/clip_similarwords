@@ -30,7 +30,7 @@ class CLIPTextSimilarWordsGen(transformers.CLIPTextModel):
         super().__init__(config)
 
     @torch.no_grad()
-    def forward(self, variant_prompts):
+    def forward(self, variant_prompts, non_padding_length):
         similarities = torch.empty(0, dtype=torch.half, device="cuda")#torch.cuda.HalfTensor()
         idx = torch.empty(0, dtype=torch.int64, device="cuda")
         tokens = torch.full((64, 77), 49407, dtype=torch.int64, device="cuda")
@@ -42,6 +42,7 @@ class CLIPTextSimilarWordsGen(transformers.CLIPTextModel):
             variant_embeddings[i:i+64] = super().forward(tokens)[0].flatten(1)
 
 #        print(variant_embeddings.shape)
+        variant_embeddings = variant_embeddings[0:non_padding_length]
 
         variant_embeddings_norm = torch.linalg.norm(variant_embeddings, dim=1, keepdim=True)
         variant_embeddings_norm2 = torch.linalg.norm(variant_embeddings.T, dim=0, keepdim=True)
@@ -60,7 +61,8 @@ class CLIPTextSimilarWordsGen(transformers.CLIPTextModel):
         del x
         mask = t >= 0.85
         nz = torch.nonzero(mask)
-#        print(t[mask].shape) # 閾値 0.85 で torch.Size([1833429])、閾値 0.80 で torch.Size([8399651])
+#        print(nz.shape)
+        print(t[mask].shape) # 閾値 0.85 で torch.Size([1056635])
         return (nz, t[mask])
 
 if __name__ == '__main__':
@@ -71,13 +73,14 @@ if __name__ == '__main__':
     tokenizer = transformers.CLIPTokenizer.from_pretrained("openai/clip-vit-large-patch14")
     arr = [sk for sk, s in tokenizer.decoder.items() if s[-4:] == "</w>"]
     #arr = [sk for sk, s in tokenizer.decoder.items() if s == "kitty</w>"]
+    non_padding_length = len(arr)
     if len(arr) % 64 != 0:
         arr += [49407] * (64 - (len(arr) % 64)) # padding
     assert(len(arr) % 64 == 0)
     variant_prompts = torch.cuda.LongTensor(arr)
 
     f = CLIPTextSimilarWordsGen.from_pretrained(model_path).to("cuda").half()
-    idx, similarities = f(variant_prompts)
+    idx, similarities = f(variant_prompts, non_padding_length)
     idx = variant_prompts[idx]
 
 #    torch.save((idx, similarities), "clip_similarwords.pt")
