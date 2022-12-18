@@ -44,7 +44,7 @@ setup(
     long_description=read('README.md'),
     python_requires=">=3.10.0",
     install_requires=install_requires,
-    scripts=["clip-similarwords"],
+    scripts=["clip-similarwords", "clip-danbooru-similarwords"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
