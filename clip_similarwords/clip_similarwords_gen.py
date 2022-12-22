@@ -45,26 +45,18 @@ class CLIPTextSimilarWordsGen(transformers.CLIPTextModel):
         variant_embeddings = variant_embeddings[0:non_padding_length]
 
         variant_embeddings_norm = torch.linalg.norm(variant_embeddings, dim=1, keepdim=True)
-        variant_embeddings_norm2 = torch.linalg.norm(variant_embeddings.T, dim=0, keepdim=True)
-#        print(variant_embeddings_norm.shape)
-#        print(variant_embeddings_norm2.shape)
+        variant_embeddings /= variant_embeddings_norm
 
-        y = torch.matmul(variant_embeddings, variant_embeddings.T)
-#        print(y.shape)
+        t = torch.matmul(variant_embeddings, variant_embeddings.T)
+#        print(t.shape)
         del variant_embeddings
 
-        x = torch.matmul(variant_embeddings_norm, variant_embeddings_norm2)
-#        print(x.shape)
-
-        t = (y / x).T # 転置不要のはず
-        del y
-        del x
         mask = t >= 0.85
 #        mask2 = t != 1.0
 #        mask &= mask2
         nz = torch.nonzero(mask)
 #        print(nz.shape)
-        print(t[mask].shape) # 閾値 0.85 で torch.Size([1056635])
+        print(t[mask].shape) # 閾値 0.85 で torch.Size([1599147])
         return (nz, t[mask])
 
 if __name__ == '__main__':
