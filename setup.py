@@ -31,7 +31,7 @@ install_requires = [
 
 setup(
     name = "clip_similarwords",
-    version = "0.0.3",
+    version = "0.0.3.1",
     author = "Toshimitsu Kimura",
     author_email = "lovesyao@gmail.com",
     description = ("finding similar 1-token words on OpenAI's CLIP."),
